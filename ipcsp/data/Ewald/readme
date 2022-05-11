@@ -1,0 +1,3 @@
+This folder contains files with coefficients arising from Ewald summation. 
+They are computed only once and stored here to save time. Note, they can take
+quite a bit of space. One file for every number of grid points g.

@@ -23,19 +23,19 @@ settings = {# perovskite structure
             'SrTiO_4': {'test': False, 'multiple': 3, 'group': 200, 'top': 1, 'grid': 6},  # group is 221, sub 195
             'SrTiO_5': {'test': False, 'multiple': 3, 'group': 195, 'top': 1, 'grid': 6},  # group is 221, sub 195
             # bixbyite structure
-            'Y2O3_1': {'test': False, 'group': 206, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
+            'Y2O3_1': {'test': True, 'group': 206, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
             'Y2O3_2': {'test': False, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
             'Y2O3_3': {'test': False, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
             # pyrochlore structure of Y2Ti2O7
-            'pyro_1': {'test': False, 'group': 227, 'top': 5, 'grid': 8},  # group is 227, 196, 195
+            'pyro_1': {'test': True, 'group': 227, 'top': 5, 'grid': 8},  # group is 227, 196, 195
             'pyro_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
             # spinel structure of MgAl2O4
-            'spinel_1': {'test': False, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+            'spinel_1': {'test': True, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
             'spinel_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, sub 195, 196, grid is 8
             'spinel_3': {'test': False, 'group': 196, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
             'spinel_4': {'test': False, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
             # garnet structure of Ca3Al2Si3O12
-            'garnet_1': {'test': False, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
+            'garnet_1': {'test': True, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
             'garnet_2': {'test': False, 'group': 206, 'top': 10, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
             # Quantum experiments
             # 'at_dwave': True will connect to the quantum annealer and use your computational budget
@@ -43,15 +43,15 @@ settings = {# perovskite structure
             'quantum_SrO': {'test': True, 'group': 195, 'at_dwave': False, 'num_reads': 100,
                             'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                             'annealing_time': 200},  # 'group': 225; pass group 195
-            'quantum_SrTiO3': {'test': False, 'group': 221, 'at_dwave': False, 'num_reads': 100,
+            'quantum_SrTiO3': {'test': True, 'group': 221, 'at_dwave': False, 'num_reads': 100,
                                'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                                'annealing_time': 200},  # group 221, passed 221
-            'quantum_ZnS': {'test': False, 'group': 195, 'at_dwave': False, 'num_reads': 200,
+            'quantum_ZnS': {'test': True, 'group': 195, 'at_dwave': False, 'num_reads': 200,
                             'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                             'annealing_time': 200},  # 'group': 216; passed 196
                                                      # passed 195; 168 qubits, chains of length 7
                                                      # it has close energy minima -134 and -133
-            'quantum_ZrO2': {'test': False, 'group': 198, 'at_dwave': False, 'num_reads': 300,
+            'quantum_ZrO2': {'test': True, 'group': 198, 'at_dwave': False, 'num_reads': 300,
                              'multiple': 1, 'infinity_placement': 50, 'infinity_orbit': 50,
                              'annealing_time': 1000},  # group 225, sub 200, 198, 195
             }
