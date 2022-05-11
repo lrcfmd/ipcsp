@@ -164,7 +164,7 @@ if __name__ == "__main__":
             print('It took ', end='')
             print(" %s seconds including IP and data generation" % (end - start))
 
-    for i in range(1, 6):
+    for i in range(1, 4):
         if settings[f'Y2O3_{i}']['test']:
             print("========== Predicting Y2O3 ==========")
             print(settings[f'Y2O3_{i}'])
@@ -188,7 +188,7 @@ if __name__ == "__main__":
             print(" %s seconds including IP and data generation" % (end - start))
 
     # Y2Ti2O7
-    for i in range(1, 6):
+    for i in range(1, 3):
         if settings[f'pyro_{i}']['test']:
             print("========== Predicting Y2Ti2O7 (pyrochlore structure) ==========")
             print(settings[f'pyro_{i}'])
@@ -210,7 +210,7 @@ if __name__ == "__main__":
             print('It took ', end='')
             print(" %s seconds" % (end - start))
 
-    for i in range(1, 6):
+    for i in range(1, 5):
         if settings[f'spinel_{i}']['test']:
             print("========== Predicting MgAl2O4 (spinel structure) ==========")
             print(settings[f'spinel_{i}'])
@@ -233,7 +233,7 @@ if __name__ == "__main__":
             print('It took ', end='')
             print(" %s seconds" % (end - start))
 
-    for i in range(1, 6):
+    for i in range(1, 3):
         if settings[f'garnet__{i}']['test']:
             print("========== Predicting Ca3Al2Si3O12 (garnet structure) ==========")
             print(settings[f'garnet_{i}'])

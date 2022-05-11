@@ -68,12 +68,14 @@ class Allocate:
         orb_key = list(orbits.keys())
 
         if verbose:
-            print("Orbits", orbits)
+            #print("Orbits", orbits)
             #print("Orbit keys", orb_key)
 
-            for k in orb_key:
-                print(k, ':', len(orbits[k]) + 1, end='; ')
-            print('\n')
+            #print("Orbits and their sizes. Similar to asymmetric units. Given as representative position : count.\n")
+            #for k in orb_key:
+            #    print(k, ':', len(orbits[k]) + 1, end='; ')
+            #print('\n')
+            print("Generating integer program\n")
 
         orb_size = [len(orbits[k]) + 1 for k in orb_key]
 
