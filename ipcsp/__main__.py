@@ -27,7 +27,7 @@ settings = {# perovskite structure
             'Y2O3_2': {'test': False, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
             'Y2O3_3': {'test': False, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
             # pyrochlore structure of Y2Ti2O7
-            'pyro_1': {'test': True, 'group': 227, 'top': 5, 'grid': 8},  # group is 227, 196, 195
+            'pyro_1': {'test': True, 'group': 227, 'top': 3, 'grid': 8},  # group is 227, 196, 195
             'pyro_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
             # spinel structure of MgAl2O4
             'spinel_1': {'test': True, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
@@ -235,7 +235,7 @@ if __name__ == "__main__":
             print(" %s seconds" % (end - start))
 
     for i in range(1, 3):
-        if settings[f'garnet__{i}']['test']:
+        if settings[f'garnet_{i}']['test']:
             print("========== Predicting Ca3Al2Si3O12 (garnet structure) ==========")
             print(settings[f'garnet_{i}'])
 
