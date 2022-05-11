@@ -1,0 +1,26 @@
+#All potentials taken from
+#J. Znhys. Chem. B, 2006, 110 (24), pp 11780–11795
+species 5
+Ca core  1.2
+Si core  2.4
+Al core  1.8
+O  core -1.2
+
+
+morse
+Ca     core  O    core  0.030211 2.241334 2.923245  15.00
+morse
+Si     core  O    core  0.340554 2.006700 2.100000  15.00
+morse
+Al     core  O    core  0.361581 1.900442 2.164818  15.00
+morse
+O      core  O    core  0.042395 1.379316 3.618701  15.00
+
+lennard
+Ca     core  O    core  5.00   0.00  15.00
+lennard
+Si     core  O    core  1.00   0.00  15.00
+lennard
+Al     core  O    core  0.90   0.00  15.00
+lennard
+O      core  O    core 22.00   0.00  15.00

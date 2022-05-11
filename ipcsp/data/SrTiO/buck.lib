@@ -1,0 +1,9 @@
+species
+O      core   -2.000000
+Sr     core    2.000000
+Ti     core    4.000000
+
+buck
+Sr core O core  1952.39   0.33685 19.22 0.0 10.0
+Ti core O core  4590.7279 0.261    0.0  0.0 10.0
+O  core O core  1388.77   0.36262 175   0.0 10.0
