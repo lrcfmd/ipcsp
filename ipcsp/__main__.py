@@ -76,9 +76,10 @@ def process_results(lib, results, printing=False):
         if len(cryst.arrays['positions']) == N_atoms:
             cryst.calc = calc
             init[idx] = cryst.get_potential_energy()
-            print("Initial:", init[idx])
+            #print("Initial:", init[idx])
         else:
-            print("GULP recieved bad solution")
+            print("GULP received a bad solution. Gurobi's implementation of pooling occasionally provides solutions "
+                  "that do not satisfy constraints. It should be corrected in future versions of the solver.")
 
     calc.set(keywords='opti conjugate conp diff comp c6')
     prev_energy = -1000000

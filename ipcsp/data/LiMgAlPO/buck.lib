@@ -1,0 +1,15 @@
+species
+Al  core  3.000
+Li  core  1.000
+Mg  core  2.000
+P  core  5.000
+O  core  -2.000
+
+buck
+Al  core O  core  1725.000 0.2897   0.00 0.0 10.0
+Li  core O  core   828.010 0.2793   0.00 0.0 10.0
+Mg  core O  core  1284.380 0.2997   0.00 0.0 10.0
+P   core O  core  736.97  0.3702 0.00 0.0 10.0000
+O   core O  core  9547.960 0.2192  32.00 0.0 10.0
+#Al  core Mg  core 0.0 0.0 0.0 0.0 10.0
+#Mg  core Mg  core 0.0 0.0 0.0 0.0 10.0
