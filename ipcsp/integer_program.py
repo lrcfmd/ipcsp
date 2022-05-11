@@ -69,7 +69,7 @@ class Allocate:
 
         if verbose:
             print("Orbits", orbits)
-            print("Orbit keys", orb_key)
+            #print("Orbit keys", orb_key)
 
             for k in orb_key:
                 print(k, ':', len(orbits[k]) + 1, end='; ')
@@ -266,7 +266,10 @@ class Allocate:
             print()
             print('Minimal energy via optimizer: %g' % m.objVal)
 
-            return res
+            if PoolSolutions > 1:
+                return res
+            else:
+                return res[0:1]
 
         return None
 

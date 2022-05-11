@@ -71,7 +71,7 @@ def process_results(lib, results, printing=False):
     best_val = 0
     best_idx = 0
     ase.io.write("best_ipcsp.vasp", results[0])
-
+    print("Processing and locally optimising solutions from the integer program\n")
     for idx, cryst in enumerate(results):
         if len(cryst.arrays['positions']) == N_atoms:
             cryst.calc = calc
@@ -97,7 +97,7 @@ def process_results(lib, results, printing=False):
                 if final[idx] < best_val:
                     best_idx = idx
                     best_val = final[idx]
-                print("Final:", final[idx])
+                #print("Final:", final[idx])
                 # input()
             # print("Energy initial: ", cryst.get_potential_energy(), " final: ", final)
 
@@ -123,7 +123,7 @@ def process_results(lib, results, printing=False):
 
 
 def get_cif_energies(filename, library, format='cif'):
-    filedir = '../structures/'
+    filedir = './structures/'
     cryst = ase.io.read(filedir + filename, format=format, parallel=False)
     calc = GULP(keywords='conp', library=library)
     calc.set(keywords='opti conjugate conp diff comp c6')
