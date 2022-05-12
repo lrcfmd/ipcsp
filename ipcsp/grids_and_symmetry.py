@@ -7,7 +7,7 @@ positions that belong to the same orbit of a given group and must contain the sa
 import numpy as np
 import json
 
-filedir = r'./data/grids/'
+filedir = root_dir + r'./data/grids/'
 
 
 def generate_orthorhombic(ions_on_sides):

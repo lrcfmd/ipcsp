@@ -6,7 +6,7 @@ from ipcsp.grids_and_symmetry import cubic
 import json
 from ipcsp.lp_to_bqm import BQM
 
-griddir = r'./data/grids/'
+griddir = __file__ + '/data/grids/'
 
 
 class Allocate:
@@ -275,264 +275,7 @@ class Allocate:
 
         return None
 
-    def optimize_cube_dwave_direct(self, at_dwave=False, num_reads=10, infinity_placement=100, infinity_orbit=100):
-        '''
-        The function to optimise the structure on the quantum annealer
-        direct implementation, mostly tweaked for SrTiO3
-        infinity_orbit is the penalty for putting two ions on the orbit
-        infinity_placement is the penalty for placing the incorrect number of ions into the structure
-        '''
-        import neal
-        import dimod
-        import dwave.embedding
-        import dwave.system
-        from dwave.system.samplers import DWaveSampler
-        from dwave.system.composites import EmbeddingComposite
-        # inf = infinity
-        N = self.grid ** 3  # positions
-        T = len(self.ions)  # different types
-        types = list(self.ions.keys())  # ordered list of elements
-        counts = [self.ions[t] for t in types]
-
-        print("Ion types are ", types)
-        print("Ion counts are", counts)
-
-        linear = {}
-        for pos in range(N):  # iterate over all the positions
-            for typ in self.ions:
-                linear[(typ, pos)] = 0
-        # print(linear)
-
-        Variables = list(linear.keys())
-        print(Variables)
-
-        quadratic = {}
-        V = len(Variables)
-        for i in range(V):
-            for j in range(i + 1, V):
-                quadratic[(Variables[i], Variables[j])] = 0
-
-        # print(quadratic)
-
-        print("Variables and constraints were generated")
-
-        # Coulomb interaction
-        dist = get_Ewald(self.grid, self.cell)
-        # np.savetxt('testEwaldNew.out', dist, delimiter=',')
-
-        for i1 in range(N):
-            # print(i1)
-
-            for j1 in range(T):  # self-interaction
-                # energy.add(Vars[j1][i1]*Vars[j1][i1]*dist[i1,i1]*self.phase.charge[types[j1]]**2)
-                linear[(types[j1], i1)] += dist[i1, i1] * self.phase.charge[types[j1]] ** 2
-                # energy.add(pt.Lattice.atom_charge[quantity[j1][0]]*pt.Lattice.atom_charge[quantity[j1][0]]*Vars[j1][i1]*Vars[j1][i1]*dist[i1,i1])
-
-            for i2 in range(i1 + 1, N):
-                # print(i2)
-                for j1 in range(T):  # pairwise Coulumb
-                    quadratic[((types[j1], i1), (types[j1], i2))] += 2 * dist[i1, i2] * self.phase.charge[
-                        types[j1]] ** 2
-                    # energy.add(Vars[j1][i1]*Vars[j1][i2]*2*dist[i1,i2]*self.phase.charge[types[j1]]**2) #i1,i2 have the same type of ion
-
-                    for j2 in range(j1 + 1, T):
-                        quadratic[((types[j1], i1), (types[j2], i2))] += 2 * dist[i1, i2] * self.phase.charge[
-                            types[j1]] * self.phase.charge[types[j2]]
-                        # energy.add(Vars[j1][i1]*Vars[j2][i2]*2*dist[i1,i2]*self.phase.charge[types[j1]]*self.phase.charge[types[j2]]) # Two different types
-                        quadratic[((types[j2], i1), (types[j1], i2))] += 2 * dist[i1, i2] * self.phase.charge[
-                            types[j1]] * self.phase.charge[types[j2]]
-                        # energy.add(Vars[j2][i1]*Vars[j1][i2]*2*dist[i1,i2]*self.phase.charge[types[j1]]*self.phase.charge[types[j2]]) # Symmetrical case
-
-        del dist
-        # exit()
-
-        # Buckingham Part
-        print(self.phase.buck)
-        # exit()
-        for ion_pair in self.phase.buck:
-            buck = get_Buck(ion_pair, self.grid, self.cell, self.phase)
-
-            if ion_pair[0] == ion_pair[1]:
-                j1 = types.index(ion_pair[0])
-
-                for i1 in range(N):
-                    linear[(types[j1], i1)] += buck[i1, i2]
-
-                    for i2 in range(i1 + 1, N):
-                        quadratic[((types[j1], i1), (types[j1], i2))] += buck[i1, i2]
-                        # energy.add(Vars[j1][i1]*Vars[j1][i2]*buck[i1, i2])
-
-            else:
-
-                j1 = types.index(ion_pair[0])
-                j2 = types.index(ion_pair[1])
-
-                for i1 in range(N):
-                    # TODO: Two different ions at the same position is impossible, should we put MAX here?
-                    # energy.add(Vars[j1][i1]*Vars[j1][i1]*buck[i1, i1])
-
-                    for i2 in range(i1 + 1, N):
-                        quadratic[((types[j1], i1), (types[j2], i2))] += buck[i1, i2]
-                        quadratic[((types[j2], i1), (types[j1], i2))] += buck[i1, i2]
-                        # energy.add(Vars[j1][i1]*Vars[j2][i2]*buck[i1, i2])
-                        # energy.add(Vars[j2][i1]*Vars[j1][i2]*buck[i1, i2])
-
-            del buck
-
-        print("Objective function was generated")
-
-        print("Adding constraints")
-        offset = 0
-
-        # single ion at every position
-        for t1 in range(T):
-            for t2 in range(t1 + 1, T):
-                for pos in range(N):
-                    quadratic[((types[t1], pos), (types[t2], pos))] += infinity_orbit
-
-        # stoichiometries
-        # standard direct version of constraints
-        # print(self.ions)
-        # for typ in self.ions:
-        #     offset += inf * self.ions[typ] ** 2
-        #
-        #     for pos in range(N):
-        #         linear[(typ, pos)] = linear[(typ, pos)] - inf * 2 * self.ions[typ] + inf
-        #
-        #         for pos2 in range(pos + 1, N):
-        #             quadratic[((typ, pos), (typ, pos2))] += inf * 2
-
-        fixTi = False
-        fixSr = True
-
-        if fixTi:
-            self.ions['O'] = 3.7
-            offset -= infinity_placement * (self.ions['O'] - 3) ** 2
-
-            self.ions['Sr'] = 1.2
-            offset -= infinity_placement * (self.ions['Sr'] - 1) ** 2
-
-        if fixSr:
-            self.ions['O'] = 3
-            offset -= infinity_placement * (self.ions['O'] - 3) ** 2
-
-            self.ions['Ti'] = 1
-            offset -= infinity_placement * (self.ions['Ti'] - 1) ** 2
-
-        print(self.ions)
-        for typ in self.ions:
-
-            offset += infinity_placement * self.ions[typ] ** 2
-
-            for pos in range(N):
-                linear[(typ, pos)] = linear[(typ, pos)] - infinity_placement * 2 * self.ions[typ] + infinity_placement
-
-                for pos2 in range(pos + 1, N):
-                    quadratic[((typ, pos), (typ, pos2))] += infinity_placement * 2
-
-        # print(quadratic)
-        # print(quadratic.values())
-        np.set_printoptions(suppress=True)
-        print('Five number summary of the coefficients:', np.percentile(
-            np.array(list(quadratic.values())), [0, 25, 50, 75, 100], interpolation='midpoint'))
-
-        print("Running the solver")
-
-        # solver = neal.SimulatedAnnealingSampler()
-        bqm = dimod.BinaryQuadraticModel(linear, quadratic, offset, dimod.BINARY)
-
-        # bqm.fix_variable(('O', 1), 1)
-        # bqm.fix_variable(('O', 2), 1)
-        # bqm.fix_variable(('O', 4), 1)
-
-        if fixTi:
-            # fixing Titanium
-            bqm.fix_variables(
-                {('Ti', 0): 1, ('Ti', 1): 0, ('Ti', 2): 0, ('Ti', 3): 0, ('Ti', 4): 0, ('Ti', 5): 0, ('Ti', 6): 0,
-                 ('Ti', 7): 0, ('Sr', 0): 0, ('O', 0): 0})
-
-        if fixSr:
-            # fixing Strontium
-            bqm.fix_variables(
-                {('Sr', 0): 0, ('Sr', 1): 1, ('Sr', 2): 0, ('Sr', 3): 0, ('Sr', 4): 0, ('Sr', 5): 0, ('Sr', 6): 0,
-                 ('Sr', 7): 0, ('Ti', 1): 0, ('O', 1): 0})
-
-        # bqm.fix_variable(('Sr', 7), 1)
-        # bqm.fix_variable(('Ti', 0), 1)
-        # print(list(bqm.variables))
-        print("There are ", len(bqm.variables), "variables in the program")
-
-        # print(linear, quadratic)
-        # print(dwave.embedding.chimera.find_clique_embedding(16,16))
-        # print(bqm)
-        # exit()
-
-        def stoic(datum):
-            counts = {'O': 0, 'Sr': 0, 'Ti': 0}
-            for k, v in datum[0].items():
-                counts[k[0]] += v
-            # print('===', datum[0])
-            return 'Counts: ' + str(counts)
-
-        def simplify(datum):
-            sample = {'energy': 0, 'sample': [], 'num_occurrences': 0}
-            sample['energy'] = datum[1]
-            sample['num_occurrences'] = int(datum[2])
-
-            for k, v in datum[0].items():
-                if v == 1:
-                    sample['sample'].append(k)
-
-            # print('<', sample, '>')
-            # print('===', datum[0])
-            return sample
-
-        if at_dwave:
-            num_variables = 14
-            embedding = dwave.embedding.chimera.find_clique_embedding(num_variables, 16)
-            print("The number of qubits: ", sum(len(chain) for chain in embedding.values()))
-            print("The longest chain: ", max(len(chain) for chain in embedding.values()))
-            exit()
-            sampler = EmbeddingComposite(DWaveSampler())
-            response = sampler.sample(bqm, num_reads=num_reads)
-            min_energy = 1000000
-            sol = None
-            json_result = []
-
-            for datum in response.data(['sample', 'energy', 'num_occurrences']):
-                print(simplify(datum), stoic(datum))
-                json_result.append(simplify(datum))
-
-                if datum.energy < min_energy:
-                    sol = datum
-                    min_energy = datum.energy
-            # print(type(sol))
-
-            with open('last_dwave.json', 'w') as f:
-                json.dump(json_result, f, indent=2)
-
-            for i in sol.sample.keys():
-                if sol.sample[i] == 1:
-                    print(i)
-            print("Energy: ", sol.energy, "Occurrences: ", sol.num_occurrences)
-        else:
-            solver = neal.SimulatedAnnealingSampler()
-            response = solver.sample(bqm, num_reads=num_reads)
-            min_energy = 10000
-            sample = 0
-            for datum in response.data(['sample', 'energy', 'num_occurrences']):
-                print(simplify(datum), stoic(datum))
-
-                if datum.energy < min_energy:
-                    sample = datum
-                    min_energy = datum.energy
-
-            for i in sample.sample.keys():
-                if sample.sample[i] == 1:
-                    print(i)
-            print("Energy: ", sample.energy, "Occurrences: ", sample.num_occurrences)
-
-    def optimize_cube_dict_2(self, group='1', at_dwave=False, num_reads=10,
+    def optimize_qubo(self, group='1', at_dwave=False, num_reads=10,
                              infinity_placement=100, infinity_orbit=100, annealing_time=200):
         """
         The function to optimise the structure on the quantum annealer
@@ -546,7 +289,12 @@ class Allocate:
         from dwave.system.samplers import DWaveSampler
         from dwave.system.composites import EmbeddingComposite
 
-        self.optimize_cube_symmetry_ase(group=group, verbose=True)
+        print("Running integer programming optimisation to generate a model file with the required coefficients and "
+              "obtain the ground truth for the lowest energy allocation.")
+
+        self.optimize_cube_symmetry_ase(group=group, verbose=False)
+
+        print("Generating quadratic unconstrained binary problem from model.lp")
 
         bqm_model = BQM()
         bqm_model.parse_lp("model.lp")
@@ -555,13 +303,11 @@ class Allocate:
         bqm_model.qubofy(infinity_placement, infinity_orbit)
 
         np.set_printoptions(suppress=True)
-        print('Five number summary of the coefficients:', np.percentile(
+        print('Five number summary of the interaction coefficients of the Ising hamiltonian:', np.percentile(
             np.array(list(bqm_model.quadratic.values())), [0, 25, 50, 75, 100], interpolation='midpoint'))
 
         # print(bqm_model.linear, bqm_model.quadratic, bqm_model.offset)
         print("The offset is equal to", bqm_model.offset)
-
-        print("Running the solver")
 
         # solver = neal.SimulatedAnnealingSampler()
         bqm = dimod.BinaryQuadraticModel(bqm_model.linear, bqm_model.quadratic, bqm_model.offset, dimod.BINARY)
@@ -570,6 +316,7 @@ class Allocate:
         # bqm.fix_variable(('Ti', 0), 1)
         # print(list(bqm.variables))
         print("There are ", len(bqm.variables), "variables in the program")
+        print("Running the Annealer")
 
         def stoic(datum):
             # counts = {'O': 0, 'Sr': 0, 'Ti': 0}
