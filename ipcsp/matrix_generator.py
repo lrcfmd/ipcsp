@@ -10,6 +10,8 @@ a potential
 Multiprocessing and numba was used to accelerate the computations
 """
 import numpy as np
+
+from ipcsp import root_dir
 from ipcsp.grids_and_symmetry import cubic
 import math
 from numba import jit, njit
@@ -17,11 +19,11 @@ from time import sleep, time
 from multiprocessing import Pool
 from functools import partial
 
-filedir = __file__ + '/data/'
+filedir = root_dir + '/data/'
 
 
 class Phase:
-    filedir = __file__ + '/data/'
+    filedir = root_dir + '/data/'
 
     def __init__(self, phase_name):
 
