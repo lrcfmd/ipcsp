@@ -59,7 +59,7 @@ settings = {# perovskite structure
 
 def process_results(lib, results, printing=False):
 
-    calc = GULP(keywords='conp', library=lib)
+    calc = GULP(keywords='single', library=lib)
 
     # Compute the number of atoms
     N_atoms = 0
@@ -261,7 +261,7 @@ if __name__ == "__main__":
     if settings['quantum_SrO']['test']:
         print("========== Predicting SrO (rocksalt) using quantum annealer ==========")
         SrTiO = Phase('SrTiO')
-        multiple = settings['Quantum_SrTiO']['multiple']  # the number of primitive cells per side
+        multiple = settings['quantum_SrO']['multiple']  # the number of primitive cells per side
         ions_count = {'O': 4 * multiple ** 3, 'Sr': 4 * multiple ** 3}
 
         start = time()

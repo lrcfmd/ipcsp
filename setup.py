@@ -17,7 +17,7 @@ setuptools.setup(
     url='https://github.com/lrcfmd/ipcsp',
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
-    install_requires=['numpy', 'gurobipy', 'ase', 'numba'],
+    install_requires=['numpy', 'gurobipy', 'ase', 'numba', 'dwave-ocean-sdk'],
     classifiers=[
         # Trove classifiers
         # (https://pypi.python.org/pypi?%3Aaction=list_classifiers)
