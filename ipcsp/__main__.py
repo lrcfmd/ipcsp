@@ -10,8 +10,8 @@ Quantum experiments for SrO, SrTiO3, ZnS, ZrO2
 """
 
 from time import time
-from integer_program import Allocate
-from matrix_generator import Phase
+from ipcsp.integer_program import Allocate
+from ipcsp.matrix_generator import Phase
 from ase.calculators.gulp import GULP
 import ase.io
 

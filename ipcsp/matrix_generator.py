@@ -10,7 +10,7 @@ a potential
 Multiprocessing and numba was used to accelerate the computations
 """
 import numpy as np
-from grids_and_symmetry import cubic
+from ipcsp.grids_and_symmetry import cubic
 import math
 from numba import jit, njit
 from time import sleep, time

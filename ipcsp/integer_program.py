@@ -1,10 +1,10 @@
 import gurobipy as gb
 import numpy as np
-from matrix_generator import Phase, get_Ewald, get_Buck, get_garnet
+from ipcsp.matrix_generator import Phase, get_Ewald, get_Buck, get_garnet
 import ase
-from grids_and_symmetry import cubic
+from ipcsp.grids_and_symmetry import cubic
 import json
-from lp_to_bqm import BQM
+from ipcsp.lp_to_bqm import BQM
 
 griddir = r'./data/grids/'
 
