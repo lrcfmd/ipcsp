@@ -10,6 +10,8 @@ Quantum experiments for SrO, SrTiO3, ZnS, ZrO2
 """
 
 from time import time
+
+from ipcsp import root_dir
 from ipcsp.integer_program import Allocate
 from ipcsp.matrix_generator import Phase
 from ase.calculators.gulp import GULP
@@ -123,7 +125,7 @@ def process_results(lib, results, ions_count, printing=False):
 
 
 def get_cif_energies(filename, library, format='cif'):
-    filedir = __file__ + '/structures/'
+    filedir = root_dir + '/structures/'
     cryst = ase.io.read(filedir + filename, format=format, parallel=False)
     calc = GULP(keywords='conp', library=library)
     calc.set(keywords='opti conjugate conp diff comp c6')

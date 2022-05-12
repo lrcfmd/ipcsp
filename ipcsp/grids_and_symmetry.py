@@ -6,8 +6,9 @@ positions that belong to the same orbit of a given group and must contain the sa
 """
 import numpy as np
 import json
+from ipcsp import root_dir
 
-filedir = __file__ + '/data/grids/'
+filedir = root_dir + '/data/grids/'
 
 
 def generate_orthorhombic(ions_on_sides):
