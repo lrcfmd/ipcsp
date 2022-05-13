@@ -13,20 +13,22 @@ DEBUG = False
 
 
 class BQM:
-    linear = {}
-    quadratic = {}
-    offset = 0
-    variables = []
-    constraints_str = []
-
-    # constraints are kept as dict with the keys:
-    # 'type' is LEQ or EQ
-    # 'lhs' [(coefficient, (specie, pos))]
-    #  'rhs' integer
-    constraints_dict = []
 
     p_ion = re.compile(r'(?P<specie>\S+)_(?P<pos>\d+)')
     p_rhs = re.compile(r'(=|<=)\s*(?P<int>\d+)')
+
+    def __init__(self):
+        self.linear = {}
+        self.quadratic = {}
+        self.offset = 0
+        self.variables = []
+        self.constraints_str = []
+
+        # constraints are kept as dict with the keys:
+        # 'type' is LEQ or EQ
+        # 'lhs' [(coefficient, (specie, pos))]
+        #  'rhs' integer
+        self.constraints_dict = []
 
     def parse_lp(self, filename, mult=0.5):
         """
