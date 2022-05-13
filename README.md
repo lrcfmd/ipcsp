@@ -28,8 +28,8 @@ the outcomes of subsequent local minimisations and the expected outcomes.
 
 On top of the commonly used python packages, the code relies on:
 
-* [Gurobi][gurobi] to solve integer programs on classical computers (tested with v9.5). Academic licence is available free of charge. 
-* [D-Wave Leap][leap] and its [sdk][dwave-sdk] to solve quadratic unconstrained binary problems (tested with dwave-ocean-sdk v2.0.1 and v5.0.0). A limited time on a quantum annealer is available each month for free. Classical simulation annealing algorithm is available as well for testing purposes and requires no registration.  
+* [Gurobi][gurobi] to solve integer programs on classical computers (tested with v9.5). Academic licence is available free of charge.
+* [D-Wave Leap][leap] and its [SDK][dwave-sdk] to solve quadratic unconstrained binary problems (tested with dwave-ocean-sdk v2.0.1 and v5.0.0). A limited time on a quantum annealer is available each month for free. Classical simulation annealing algorithm is available as well in the same package for testing purposes and requires no registration.  
 * [GULP][gulp] for subsequent local minimisations of periodic lattice allocations (tested with 5.2).
 
 [gurobi]: https://www.gurobi.com/
@@ -39,7 +39,7 @@ On top of the commonly used python packages, the code relies on:
 
 ### Package
 
-It can be installed sing pip:
+It can be installed using pip:
 ```bash
 pip install -e git+git@github.com:lrcfmd/ipcsp.git#egg=ipcsp
 ```
@@ -63,8 +63,8 @@ defined in `__main__.py` as well as other parameters of the corresponding
 lattice allocation problems.
 
 For every phase field, grid and unit cell sizes the package will store 
-the interaction values between different positions for subsequent use. 
+the interaction values between different pairs of atoms and positions for subsequent use. 
 Thus, repeated runs for another space group or composition are usually faster. 
 
 ## Citation
-The code is written to accompany the paper "Non-Heuristic Algorithms, Guarantees and Quantum Computing for Crystal Structure Prediction" and this version will not be further updated except for minor corrections.
+This research code is written to accompany the paper "Non-Heuristic Algorithms, Guarantees and Quantum Computing for Crystal Structure Prediction" and this version will not be further updated except for minor corrections.

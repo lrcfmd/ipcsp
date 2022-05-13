@@ -45,15 +45,15 @@ settings = {  # perovskite structure
     'quantum_SrO': {'test': True, 'group': 195, 'at_dwave': False, 'num_reads': 100,
                     'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                     'annealing_time': 200},  # 'group': 225; pass group 195
-    'quantum_SrTiO3': {'test': False, 'group': 221, 'at_dwave': False, 'num_reads': 100,
+    'quantum_SrTiO3': {'test': True, 'group': 221, 'at_dwave': False, 'num_reads': 100,
                        'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                        'annealing_time': 200},  # group 221, passed 221
-    'quantum_ZnS': {'test': False, 'group': 195, 'at_dwave': False, 'num_reads': 200,
+    'quantum_ZnS': {'test': True, 'group': 195, 'at_dwave': False, 'num_reads': 200,
                     'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                     'annealing_time': 200},  # 'group': 216; passed 196
     # passed 195; 168 qubits, chains of length 7
     # it has close energy minima -134 and -133
-    'quantum_ZrO2': {'test': False, 'group': 198, 'at_dwave': False, 'num_reads': 300,
+    'quantum_ZrO2': {'test': True, 'group': 198, 'at_dwave': False, 'num_reads': 300,
                      'multiple': 1, 'infinity_placement': 50, 'infinity_orbit': 50,
                      'annealing_time': 1000},  # group 225, sub 200, 198, 195
 }
