@@ -1,6 +1,6 @@
 # ipcsp: integer programming for crystal structure prediction
 
-![Tux, the Linux mascot](fig.png)
+![Periodic lattice allocation, integer programming and CSP](fig.png)
 
 The task of finding a periodic allocation of atoms on a grid in space that minimises
 their interaction energy can be encoded as an integer program. These integer programs
