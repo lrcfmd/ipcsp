@@ -19,26 +19,26 @@ import ase.io
 
 # The parameters to reproduce Table 1 in the paper and quantum experiments
 settings = {  # perovskite structure
-    'SrTiO_1': {'test': False, 'multiple': 1, 'group': 1, 'top': 1, 'grid': 4},  # group is 221, sub 195
-    'SrTiO_2': {'test': False, 'multiple': 2, 'group': 195, 'top': 1, 'grid': 8},  # group is 221, sub 195
-    'SrTiO_3': {'test': False, 'multiple': 3, 'group': 221, 'top': 1, 'grid': 6},  # group is 221, sub 195
-    'SrTiO_4': {'test': False, 'multiple': 3, 'group': 200, 'top': 1, 'grid': 6},  # group is 221, sub 195
-    'SrTiO_5': {'test': False, 'multiple': 3, 'group': 195, 'top': 1, 'grid': 6},  # group is 221, sub 195
+    'SrTiO_1': {'test': True, 'multiple': 1, 'group': 1, 'top': 1, 'grid': 4},  # group is 221, sub 195
+    'SrTiO_2': {'test': True, 'multiple': 2, 'group': 195, 'top': 1, 'grid': 8},  # group is 221, sub 195
+    'SrTiO_3': {'test': True, 'multiple': 3, 'group': 221, 'top': 1, 'grid': 6},  # group is 221, sub 195
+    'SrTiO_4': {'test': True, 'multiple': 3, 'group': 200, 'top': 1, 'grid': 6},  # group is 221, sub 195
+    'SrTiO_5': {'test': True, 'multiple': 3, 'group': 195, 'top': 1, 'grid': 6},  # group is 221, sub 195
     # bixbyite structure
-    'Y2O3_1': {'test': False, 'group': 206, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
-    'Y2O3_2': {'test': False, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
-    'Y2O3_3': {'test': False, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
+    'Y2O3_1': {'test': True, 'group': 206, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
+    'Y2O3_2': {'test': True, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
+    'Y2O3_3': {'test': True, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
     # pyrochlore structure of Y2Ti2O7
-    'pyro_1': {'test': False, 'group': 227, 'top': 3, 'grid': 8},  # group is 227, 196, 195
-    'pyro_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
+    'pyro_1': {'test': True, 'group': 227, 'top': 3, 'grid': 8},  # group is 227, 196, 195
+    'pyro_2': {'test': True, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
     # spinel structure of MgAl2O4
-    'spinel_1': {'test': False, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
-    'spinel_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, sub 195, 196, grid is 8
-    'spinel_3': {'test': False, 'group': 196, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
-    'spinel_4': {'test': False, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'spinel_1': {'test': True, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'spinel_2': {'test': True, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, sub 195, 196, grid is 8
+    'spinel_3': {'test': True, 'group': 196, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'spinel_4': {'test': True, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
     # garnet structure of Ca3Al2Si3O12
-    'garnet_1': {'test': False, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
-    'garnet_2': {'test': False, 'group': 206, 'top': 10, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
+    'garnet_1': {'test': True, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
+    'garnet_2': {'test': True, 'group': 206, 'top': 10, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
     # Quantum experiments
     # 'at_dwave': True will connect to the quantum annealer and use your computational budget
     # 'at_dwave': False will rely on local simulated annealing
@@ -327,7 +327,7 @@ def benchmark():
         print(" %s seconds" % (end - start))
 
     if settings['quantum_SrTiO3']['test']:
-        print("========== Predicting SrTiO3 or other using quantum annealer ==========")
+        print("========== Predicting SrTiO3 (perovskite) using quantum annealer ==========")
         SrTiO = Phase('SrTiO')
         multiple = settings['quantum_SrTiO3']['multiple']  # the number of primitive cells per side
         ions_count = {'O': 3 * multiple ** 3, 'Sr': 1 * multiple ** 3, 'Ti': 1 * multiple ** 3}
