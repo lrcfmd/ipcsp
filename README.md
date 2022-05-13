@@ -1,6 +1,6 @@
 # ipcsp: integer programming for crystal structure prediction
 
-![Periodic lattice allocation, integer programming and CSP](fig.png)
+<img src="fig.png"  width="50%">
 
 The task of finding a periodic allocation of atoms on a grid in space that minimises
 their interaction energy can be encoded as an integer program. These integer programs
