@@ -3,7 +3,7 @@
 <img align="left" src="fig.png"  width="50%" alt="ipcsp graphic">
 
 The task of finding a periodic allocation of atoms on a grid in space that minimises
-their interaction energy can be encoded as an integer program. These integer programs
+their pairwise interaction energy can be encoded as an integer program. Such integer program
 can be solved either using advanced solvers to obtain provably optimal solutions or 
 using quantum annealers (or any other Ising machine) for a potential speed-up or
 energy efficiency. Subsequently, solutions of the periodic lattice allocation 
@@ -13,7 +13,7 @@ investigations of the potential energy surfaces.
 This package provides implementation of this encoding for uniform grids in
 cubic unit cells, where the interaction energy is a sum of periodic Coulombic 
 interaction computed using Ewald summation method and Buckingham repulsion. 
-A special interaction potential for Ca-Al-Si-O phase field is provided as well.
+An example of interaction potential is provided for Ca-Al-Si-O phase field.
 In the current implementation, the resulting integer programs can be solved 
 either using Gurobi or D-Wave quantum annealer.
 
