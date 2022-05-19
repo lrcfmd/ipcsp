@@ -29,7 +29,7 @@ settings = {  # perovskite structure
     'Y2O3_2': {'test': True, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
     'Y2O3_3': {'test': True, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
     # pyrochlore structure of Y2Ti2O7
-    'pyro_1': {'test': True, 'group': 227, 'top': 3, 'grid': 8},  # group is 227, 196, 195
+    'pyro_1': {'test': True, 'group': 227, 'top': 2, 'grid': 8},  # group is 227, 196, 195
     'pyro_2': {'test': True, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
     # spinel structure of MgAl2O4
     'spinel_1': {'test': True, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
@@ -38,7 +38,7 @@ settings = {  # perovskite structure
     'spinel_4': {'test': True, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
     # garnet structure of Ca3Al2Si3O12
     'garnet_1': {'test': True, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
-    'garnet_2': {'test': True, 'group': 206, 'top': 10, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
+    'garnet_2': {'test': True, 'group': 206, 'top': 1, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
     # Quantum experiments
     # 'at_dwave': True will connect to the quantum annealer and use your computational budget
     # 'at_dwave': False will rely on local simulated annealing
