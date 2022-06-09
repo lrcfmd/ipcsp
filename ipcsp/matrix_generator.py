@@ -20,11 +20,11 @@ from time import sleep, time
 from multiprocessing import Pool
 from functools import partial
 
-filedir = root_dir / '/data/'
+filedir = root_dir / 'data/'
 
 
 class Phase:
-    filedir = root_dir / '/data/'
+    filedir = root_dir / 'data/'
 
     def __init__(self, phase_name):
 
