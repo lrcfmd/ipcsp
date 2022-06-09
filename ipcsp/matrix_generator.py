@@ -499,7 +499,7 @@ def get_Ewald(grid_size, cell_size):
             return np.load(f) * (grid_size / cell_size)
 
     except IOError:
-        generate_Ewald(grid_size, filedir + 'Ewald/')
+        generate_Ewald(grid_size, filedir / 'Ewald/')
         with open(filedir / 'Ewald' / filename, 'rb') as f:
             return np.load(f) * (grid_size / cell_size)
 
