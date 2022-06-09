@@ -8,7 +8,7 @@ import numpy as np
 import json
 from ipcsp import root_dir
 
-filedir = root_dir + '/data/grids/'
+filedir = root_dir / '/data/grids/'
 
 
 def generate_orthorhombic(ions_on_sides):
@@ -43,7 +43,7 @@ def readGroup(number):
     Returns the list of augmented matrices of a space group with given number.
     '''
     result = []
-    with open(filedir + 'G{number}.txt'.format(number=number)) as f:
+    with open(filedir / 'G{number}.txt'.format(number=number)) as f:
         for line in f.readlines():
             line = line.rstrip('\n')
             line = line.split(sep=',')

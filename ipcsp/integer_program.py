@@ -8,7 +8,7 @@ from ipcsp.grids_and_symmetry import cubic
 import json
 from ipcsp.lp_to_bqm import BQM
 
-griddir = root_dir + '/data/grids/'
+griddir = root_dir / '/data/grids/'
 
 
 class Allocate:
@@ -59,12 +59,14 @@ class Allocate:
 
     def optimize_cube_symmetry_ase(self, group='1', PoolSolutions=1, TimeLimit=0, verbose=True):
         '''
+        The function to generate an integer program and solve allocation problem using Gurobi.
+        We rely on atomic simulation environment to handle allocations afterwards.
         '''
 
         N = self.grid ** 3  # number
         T = len(self.ions)  # different types
 
-        with open(griddir + 'CO{grid}G{group}.json'.format(grid=self.grid, group=group), "r") as f:
+        with open(griddir / 'CO{grid}G{group}.json'.format(grid=self.grid, group=group), "r") as f:
             orbits = json.load(f)
 
         orb_key = list(orbits.keys())
