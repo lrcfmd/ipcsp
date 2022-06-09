@@ -8,7 +8,7 @@ import numpy as np
 import json
 from ipcsp import root_dir
 
-filedir = root_dir / '/data/grids/'
+filedir = root_dir / 'data/grids/'
 
 
 def generate_orthorhombic(ions_on_sides):

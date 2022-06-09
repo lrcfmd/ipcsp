@@ -126,7 +126,7 @@ def process_results(lib, results, ions_count, printing=False):
 
 
 def get_cif_energies(filename, library, format='cif'):
-    filedir = root_dir / '/structures/'
+    filedir = root_dir / 'structures/'
     cryst = ase.io.read((filedir / filename), format=format, parallel=False)
     calc = GULP(keywords='conp', library=library)
     calc.set(keywords='opti conjugate conp diff comp c6')

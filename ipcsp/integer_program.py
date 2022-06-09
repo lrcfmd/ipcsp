@@ -8,7 +8,7 @@ from ipcsp.grids_and_symmetry import cubic
 import json
 from ipcsp.lp_to_bqm import BQM
 
-griddir = root_dir / '/data/grids/'
+griddir = root_dir / 'data/grids/'
 
 
 class Allocate:
