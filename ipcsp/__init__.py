@@ -1,3 +1,4 @@
 import os
-root_dir = os.path.dirname(os.path.abspath(__file__))
+from pathlib import Path
+root_dir = Path(os.path.dirname(os.path.abspath(__file__)))
 

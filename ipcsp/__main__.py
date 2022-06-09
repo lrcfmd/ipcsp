@@ -10,6 +10,7 @@ Quantum experiments for SrO, SrTiO3, ZnS, ZrO2
 """
 
 from time import time
+from pathlib import Path
 
 from ipcsp import root_dir
 from ipcsp.integer_program import Allocate
@@ -125,8 +126,8 @@ def process_results(lib, results, ions_count, printing=False):
 
 
 def get_cif_energies(filename, library, format='cif'):
-    filedir = root_dir + '/structures/'
-    cryst = ase.io.read(filedir + filename, format=format, parallel=False)
+    filedir = root_dir / '/structures/'
+    cryst = ase.io.read((filedir / filename), format=format, parallel=False)
     calc = GULP(keywords='conp', library=library)
     calc.set(keywords='opti conjugate conp diff comp c6')
     opt = calc.get_optimizer(cryst)
@@ -158,8 +159,8 @@ def benchmark():
             results = allocation.optimize_cube_symmetry_ase(group=settings[f'SrTiO_{i}']['group'],
                                                             PoolSolutions=settings[f'SrTiO_{i}']['top'], TimeLimit=0)
 
-            process_results(lib=SrTiO.filedir + 'SrTiO/buck.lib', results=results, ions_count=ions_count)
-            energy = get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir + 'SrTiO/buck.lib')
+            process_results(lib=SrTiO.filedir / 'SrTiO/buck.lib', results=results, ions_count=ions_count)
+            energy = get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
             if multiple > 1:
                 print("For the given multiple it is equal to ", energy * multiple ** 3, "eV")
 
@@ -183,8 +184,8 @@ def benchmark():
             results = allocation.optimize_cube_symmetry_ase(group=settings[f'Y2O3_{i}']['group'],
                                                             PoolSolutions=settings[f'Y2O3_{i}']['top'], TimeLimit=0)
 
-            process_results(lib=YSrTiO.filedir + 'YSrTiO/buck.lib', results=results, ions_count=ions_count)
-            get_cif_energies(filename='Y2O3.cif', library=YSrTiO.filedir + 'YSrTiO/buck.lib')
+            process_results(lib=YSrTiO.filedir / 'YSrTiO/buck.lib', results=results, ions_count=ions_count)
+            get_cif_energies(filename='Y2O3.cif', library=YSrTiO.filedir / 'YSrTiO/buck.lib')
 
             end = time()
             print('It took ', end='')
@@ -206,8 +207,8 @@ def benchmark():
             results = allocation.optimize_cube_symmetry_ase(group=settings[f'pyro_{i}']['group'],
                                                             PoolSolutions=settings[f'pyro_{i}']['top'], TimeLimit=0)
 
-            process_results(lib=YSrTiO.filedir + 'YSrTiO/buck.lib', results=results, ions_count=ions_count)
-            get_cif_energies(filename='Y2Ti2O7.cif', library=YSrTiO.filedir + 'YSrTiO/buck.lib')
+            process_results(lib=YSrTiO.filedir / 'YSrTiO/buck.lib', results=results, ions_count=ions_count)
+            get_cif_energies(filename='Y2Ti2O7.cif', library=YSrTiO.filedir / 'YSrTiO/buck.lib')
 
             end = time()
             print('It took ', end='')
@@ -229,8 +230,8 @@ def benchmark():
             results = allocation.optimize_cube_symmetry_ase(group=settings[f'spinel_{i}']['group'],
                                                             PoolSolutions=settings[f'spinel_{i}']['top'], TimeLimit=0)
 
-            process_results(lib=LiMgAlPO.filedir + 'LiMgAlPO/buck.lib', results=results, ions_count=ions_count)
-            get_cif_energies(filename='MgAl2O4.cif', library=LiMgAlPO.filedir + 'LiMgAlPO/buck.lib')
+            process_results(lib=LiMgAlPO.filedir / 'LiMgAlPO/buck.lib', results=results, ions_count=ions_count)
+            get_cif_energies(filename='MgAl2O4.cif', library=LiMgAlPO.filedir / 'LiMgAlPO/buck.lib')
 
             end = time()
             print('It took ', end='')
@@ -255,7 +256,7 @@ def benchmark():
                                                             PoolSolutions=settings[f'garnet_{i}']['top'], TimeLimit=0)
 
             process_results(lib=CaAlSiO.filedir + 'CaAlSiO/pedone.lib', results=results, ions_count=ions_count)
-            get_cif_energies(filename='Ca3Al2Si3O12.cif', library=CaAlSiO.filedir + 'CaAlSiO/pedone.lib')
+            get_cif_energies(filename='Ca3Al2Si3O12.cif', library=CaAlSiO.filedir / 'CaAlSiO/pedone.lib')
 
             end = time()
             print('It took ', end='')
@@ -277,7 +278,7 @@ def benchmark():
                                            infinity_orbit=settings['quantum_SrO']['infinity_orbit'],
                                            annealing_time=settings['quantum_SrO']['annealing_time'])
 
-        get_cif_energies(filename='SrO.cif', library=SrTiO.filedir + 'SrTiO/buck.lib')
+        get_cif_energies(filename='SrO.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
 
         end = time()
         print('It took ', end='')
@@ -298,7 +299,7 @@ def benchmark():
                                            infinity_orbit=settings['quantum_ZnS']['infinity_orbit'],
                                            annealing_time=settings['quantum_ZnS']['annealing_time'])
 
-        get_cif_energies(filename='ZnS.cif', library=ZnS.filedir + 'ZnS/buck.lib')
+        get_cif_energies(filename='ZnS.cif', library=ZnS.filedir / 'ZnS/buck.lib')
 
         end = time()
         print('It took ', end='')
@@ -320,7 +321,7 @@ def benchmark():
                                            infinity_orbit=settings['quantum_ZrO2']['infinity_orbit'],
                                            annealing_time=settings['quantum_ZrO2']['annealing_time'])
 
-        get_cif_energies(filename='ZrO2.cif', library=ZrO.filedir + 'ZrO/buck.lib')
+        get_cif_energies(filename='ZrO2.cif', library=ZrO.filedir / 'ZrO/buck.lib')
 
         end = time()
         print('It took ', end='')
@@ -342,7 +343,7 @@ def benchmark():
                                            infinity_orbit=settings['quantum_SrTiO3']['infinity_orbit'],
                                            annealing_time=settings['quantum_SrTiO3']['annealing_time'])
 
-        get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir + 'SrTiO/buck.lib')
+        get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
 
         end = time()
         print('It took ', end='')

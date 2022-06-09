@@ -10,6 +10,7 @@ a potential
 Multiprocessing and numba was used to accelerate the computations
 """
 import numpy as np
+from pathlib import Path
 
 from ipcsp import root_dir
 from ipcsp.grids_and_symmetry import cubic
@@ -19,11 +20,11 @@ from time import sleep, time
 from multiprocessing import Pool
 from functools import partial
 
-filedir = root_dir + '/data/'
+filedir = root_dir / '/data/'
 
 
 class Phase:
-    filedir = root_dir + '/data/'
+    filedir = root_dir / '/data/'
 
     def __init__(self, phase_name):
 
@@ -39,11 +40,11 @@ class Phase:
 
         self.name = phase_name
 
-        self.location = self.filedir + phase_name + '/'
+        self.location = self.filedir / phase_name
 
         self.garnet = False  # HACK:garnet case is treated separately
 
-        with open(self.filedir + phase_name + '/radii.lib', 'r') as f:
+        with open(self.filedir / phase_name / 'radii.lib', 'r') as f:
             for line in f.readlines():
                 if line.startswith('#'):
                     continue
@@ -54,7 +55,7 @@ class Phase:
         print('Radii', self.radius)
 
         try:
-            with open(self.filedir + phase_name + '/dist.lib', 'r') as f:
+            with open(self.filedir / phase_name / 'dist.lib', 'r') as f:
                 for line in f.readlines():
                     if line.startswith('#'):
                         continue
@@ -69,7 +70,7 @@ class Phase:
 
         try:
 
-            with open(self.filedir + phase_name + '/buck.lib', 'r') as f:
+            with open(self.filedir / phase_name / 'buck.lib', 'r') as f:
                 charge_lines = False
                 buck_lines = False
 
@@ -239,7 +240,7 @@ def generate_Ewald(size, ouput_directory):
     print("Its min is ", dist.min())
     # print(dist)
 
-    with open(ouput_directory + filename, 'wb') as outfile:
+    with open(ouput_directory / filename, 'wb') as outfile:
         np.save(outfile, dist)
 
 
@@ -257,7 +258,7 @@ def BuckinghamTwoIons(pos_i, pos_j, cell_size, A, rho, beta, lo, hi, closest_dis
 
     # HACK BEGINS
     # Dirty hack to handle closest distances
-    # TODO: remove this embarrassment
+    # TODO: remove this
     if rho < 0.00001:
         max_cells = 1
 
@@ -310,7 +311,6 @@ def GarnetTwoIons(pos_i, pos_j, cell_size, De, a0, r0, A, lo, hi, closest_distan
     """
     Interaction between two ions under PBC
     pos_i, pos_j belongs to 3D
-
     """
     MAX = 5000
     max_cells = int(np.ceil(hi / cell_size))
@@ -412,7 +412,7 @@ def generate_Buck(grid_size, cell_size, phase, output_directory, radius_threshol
         # print(filename)
         # print(ion_pair, '\n', np.around(result, decimals=2))
 
-        with open(output_directory + filename, 'wb') as outfile:
+        with open(output_directory / filename, 'wb') as outfile:
             np.save(outfile, result)
 
 
@@ -452,7 +452,7 @@ def generate_garnet(grid_size, cell_size, phase, output_directory, radius_thresh
         filename = 'C{grid_size}_'.format(grid_size=grid_size) + ion_pair[0] + ion_pair[1] + '_{cell_size}.npy'.format(
             cell_size=cell_size)
 
-        with open(output_directory + filename, 'wb') as outfile:
+        with open(output_directory / filename, 'wb') as outfile:
             np.save(outfile, result)
 
 
@@ -464,11 +464,11 @@ def get_Buck(ion_pair, grid_size, cell_size, phase):
         cell_size=cell_size)
 
     try:
-        with open(phase.location + filename, 'rb') as f:
+        with open(phase.location / filename, 'rb') as f:
             return np.load(f)
     except IOError:
         generate_Buck(grid_size, cell_size, phase, phase.location, multicpu=True)
-        with open(phase.location + filename, 'rb') as f:
+        with open(phase.location / filename, 'rb') as f:
             return np.load(f)
 
 
@@ -480,11 +480,11 @@ def get_garnet(ion_pair, grid_size, cell_size, phase):
         cell_size=cell_size)
 
     try:
-        with open(phase.location + filename, 'rb') as f:
+        with open(phase.location / filename, 'rb') as f:
             return np.load(f)
     except IOError:
         generate_garnet(grid_size, cell_size, phase, phase.location, multicpu=True)
-        with open(phase.location + filename, 'rb') as f:
+        with open(phase.location / filename, 'rb') as f:
             return np.load(f)
 
 
@@ -495,12 +495,12 @@ def get_Ewald(grid_size, cell_size):
     filename = 'C{grid_size}.npy'.format(grid_size=grid_size)
 
     try:
-        with open(filedir + 'Ewald/' + filename, 'rb') as f:
+        with open(filedir / 'Ewald' / filename, 'rb') as f:
             return np.load(f) * (grid_size / cell_size)
 
     except IOError:
         generate_Ewald(grid_size, filedir + 'Ewald/')
-        with open(filedir + 'Ewald/' + filename, 'rb') as f:
+        with open(filedir / 'Ewald' / filename, 'rb') as f:
             return np.load(f) * (grid_size / cell_size)
 
 
