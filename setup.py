@@ -12,7 +12,7 @@ setuptools.setup(
     name='ipcsp',
     license="MIT",
     description='Integer programming encoding for crystal structure prediction',
-    version='v0.0.3',
+    version='0.0.3',
     long_description=README,
     url='https://github.com/lrcfmd/ipcsp',
     packages=setuptools.find_packages(),
@@ -29,4 +29,10 @@ setuptools.setup(
         'Topic :: Scientific/Engineering :: Physics',
         'Intended Audience :: Science/Research',
     ],
+    package_data={'ipcsp': ['data/CaAlSiO/*.lib', 'data/LiMgAlPO/*.lib',
+                            'data/SrTiO/*.lib', 'data/YSrTiO/*.lib',
+                            'data/ZnS/*.lib', 'data/ZnO/*.lib',
+                            'data/Ewald/readme', 'data/grids/*.txt', 'data/grids/*.json',
+                            'structures/*.cif', 'structures/spinel/*.*',
+                            'fig.png', 'LICENSE', 'README.md']}
 )

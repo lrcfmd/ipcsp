@@ -11,6 +11,7 @@ Quantum experiments for SrO, SrTiO3, ZnS, ZrO2
 
 from time import time
 from pathlib import Path
+import os
 
 from ipcsp import root_dir
 from ipcsp.integer_program import Allocate
@@ -61,7 +62,8 @@ settings = {  # perovskite structure
 
 
 def process_results(lib, results, ions_count, printing=False):
-    calc = GULP(keywords='single', library=lib)
+    # path hack here
+    calc = GULP(keywords='single', library=os.path.join(".", lib))
 
     # Compute the number of atoms
     N_atoms = 0
@@ -127,7 +129,8 @@ def process_results(lib, results, ions_count, printing=False):
 
 def get_cif_energies(filename, library, format='cif'):
     filedir = root_dir / 'structures/'
-    cryst = ase.io.read((filedir / filename), format=format, parallel=False)
+    # Path hacks again
+    cryst = ase.io.read(os.path.join(".", filedir / filename), format=format, parallel=False)
     calc = GULP(keywords='conp', library=library)
     calc.set(keywords='opti conjugate conp diff comp c6')
     opt = calc.get_optimizer(cryst)

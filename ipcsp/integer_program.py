@@ -1,5 +1,6 @@
 import gurobipy as gb
 import numpy as np
+import os
 
 from ipcsp import root_dir
 from ipcsp.matrix_generator import Phase, get_Ewald, get_Buck, get_garnet
@@ -9,7 +10,6 @@ import json
 from ipcsp.lp_to_bqm import BQM
 
 griddir = root_dir / 'data/grids/'
-
 
 class Allocate:
 
@@ -66,7 +66,8 @@ class Allocate:
         N = self.grid ** 3  # number
         T = len(self.ions)  # different types
 
-        with open(griddir / 'CO{grid}G{group}.json'.format(grid=self.grid, group=group), "r") as f:
+        # PATH hack
+        with open(os.path.join(".", griddir / 'CO{grid}G{group}.json'.format(grid=self.grid, group=group)), "r") as f:
             orbits = json.load(f)
 
         orb_key = list(orbits.keys())

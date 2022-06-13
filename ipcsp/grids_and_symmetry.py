@@ -4,12 +4,13 @@ Space groups are stored in G{space group number}.txt files in filedir given
 by their operations. CO{grid}G{group number}.json files contain information about the
 positions that belong to the same orbit of a given group and must contain the same atoms.
 """
+import os.path
+
 import numpy as np
 import json
 from ipcsp import root_dir
 
 filedir = root_dir / 'data/grids/'
-
 
 def generate_orthorhombic(ions_on_sides):
     """

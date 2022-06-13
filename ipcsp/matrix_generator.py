@@ -9,8 +9,11 @@ a potential
 
 Multiprocessing and numba was used to accelerate the computations
 """
+
+# this file is full of file path hacks, fix it at some point
+
 import numpy as np
-from pathlib import Path
+import os
 
 from ipcsp import root_dir
 from ipcsp.grids_and_symmetry import cubic
@@ -44,7 +47,7 @@ class Phase:
 
         self.garnet = False  # HACK:garnet case is treated separately
 
-        with open(self.filedir / phase_name / 'radii.lib', 'r') as f:
+        with open(os.path.join(".", self.filedir / phase_name / 'radii.lib'), 'r') as f:
             for line in f.readlines():
                 if line.startswith('#'):
                     continue
@@ -55,7 +58,7 @@ class Phase:
         print('Radii', self.radius)
 
         try:
-            with open(self.filedir / phase_name / 'dist.lib', 'r') as f:
+            with open(os.path.join(".", self.filedir / phase_name / 'dist.lib'), 'r') as f:
                 for line in f.readlines():
                     if line.startswith('#'):
                         continue
@@ -70,7 +73,7 @@ class Phase:
 
         try:
 
-            with open(self.filedir / phase_name / 'buck.lib', 'r') as f:
+            with open(os.path.join(".", self.filedir / phase_name / 'buck.lib'), 'r') as f:
                 charge_lines = False
                 buck_lines = False
 
