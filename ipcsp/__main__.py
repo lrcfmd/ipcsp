@@ -477,11 +477,10 @@ def benchmark():
         print('It took ', end='')
         print(" %s seconds" % (end - start))
 
-        with open(os.path.join("..", "results", "summary.txt"), "a") as f:
-            print("\n\n\n\n\n Quantum annealing for periodic lattice atom allocation.\n Target energies correspond to",
-                  file=f)
-            print(tabulate(df_summary, headers=["Test name", "D-Wave", "Best energy (eV)", "Target energy (eV)"],
-                           tablefmt='github', showindex=False), file=f)
+    with open(os.path.join("..", "results", "summary.txt"), "a") as f:
+        print("\n\n\n\n\n Quantum annealing for periodic lattice atom allocation.\n", file=f)
+        print(tabulate(df_summary, headers=["Test name", "D-Wave", "Best energy (eV)", "Target energy (eV)"],
+                       tablefmt='github', showindex=False), file=f)
 
 
 if __name__ == "__main__":
