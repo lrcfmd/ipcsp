@@ -17,7 +17,7 @@ setuptools.setup(
     url='https://github.com/lrcfmd/ipcsp',
     packages=setuptools.find_packages(),
     python_requires=">=3.7",
-    install_requires=['numpy', 'gurobipy', 'ase', 'numba', 'dwave-ocean-sdk'],
+    install_requires=['numpy', 'gurobipy', 'ase', 'numba', 'dwave-ocean-sdk', 'tabulate'],
     classifiers=[
         # Trove classifiers
         # (https://pypi.python.org/pypi?%3Aaction=list_classifiers)
@@ -33,6 +33,5 @@ setuptools.setup(
                             'data/SrTiO/*.lib', 'data/YSrTiO/*.lib',
                             'data/ZnS/*.lib', 'data/ZnO/*.lib',
                             'data/Ewald/readme', 'data/grids/*.txt', 'data/grids/*.json',
-                            'structures/*.cif', 'structures/spinel/*.*',
-                            'fig.png', 'LICENSE', 'README.md']}
+                            'structures/*.cif', 'structures/spinel/*.*']}
 )

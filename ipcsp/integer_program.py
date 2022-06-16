@@ -249,6 +249,7 @@ class Allocate:
         m.write("model.lp")
 
         m.optimize()
+        runtime = m.Runtime
 
         if m.status == gb.GRB.CUTOFF:
             print("Cutoff! No solution with negative energy.")
@@ -274,9 +275,9 @@ class Allocate:
             print('Minimal energy via optimizer: %g' % m.objVal)
 
             if PoolSolutions > 1:
-                return res
+                return res, runtime
             else:
-                return res[0:1]
+                return res[0:1], runtime
 
         return None
 
