@@ -28,6 +28,7 @@ from ipcsp.integer_program import Allocate
 from ipcsp.matrix_generator import Phase
 from ase.calculators.gulp import GULP
 import ase.io
+from copy import deepcopy
 
 '''
  The settings dictionary lists the predictions to run and parameters of the configuration spaces for
@@ -111,6 +112,9 @@ def process_results(lib, results, ions_count, test_name, printing=False):
     os.mkdir(os.path.join("..", "results", test_name))
     calc = GULP(keywords='single', library=os.path.join(".", lib))
 
+    # stash the allocations for future
+    results_ip = deepcopy(results)
+
     # Compute the number of atoms
     N_atoms = 0
     for k, v in ions_count.items():
@@ -121,7 +125,7 @@ def process_results(lib, results, ions_count, test_name, printing=False):
     best_val = 0
     best_idx = 0
     # ase.io.write("best_ipcsp.vasp", results[0])
-    ase.io.write(os.path.join("..", "results", test_name, "ip_optimum.vasp"), results[0])
+    # ase.io.write(os.path.join("..", "results", test_name, "ip_optimum.vasp"), results[0])
     print("Processing and locally optimising solutions from the integer program\n")
     for idx, cryst in enumerate(results):
         if len(cryst.arrays['positions']) == N_atoms:
@@ -157,17 +161,18 @@ def process_results(lib, results, ions_count, test_name, printing=False):
     with open(os.path.join("..", "results", test_name, "energies.txt"), "w+") as f:
         for i in range(len(results)):
             if final[i] != 0:
-                print(count, "Energy initial: ", init[i], " final: ", final[i])
-                print(count, "Energy initial: ", init[i], " final: ", final[i], file=f)
-                if len(results) > 1:
-                    # ase.io.write(f'solution{count}.vasp', results[i])
-                    ase.io.write(os.path.join("..", "results", test_name, f'solution{count}.vasp'), results[i])
+                print(f"Solution{count}: ", "Energy initial: ", init[i], " final: ", final[i])
+                print(f"Solution{count}: ", "Energy initial: ", init[i], " final: ", final[i], file=f)
+                # if len(results) > 1:
+                #    # ase.io.write(f'solution{count}.vasp', results[i])
+                ase.io.write(os.path.join("..", "results", test_name, f'solution{count}_lattice.vasp'), results_ip[i])
+                ase.io.write(os.path.join("..", "results", test_name, f'solution{count}_minimised.vasp'), results[i])
                 count += 1
 
     cryst = results[best_idx]
     print("The lowest found energy is ", best_val, "eV")
     # print("The energy per ion is ", best_val/N_atoms, "eV")
-    ase.io.write(os.path.join("..", "results", test_name, "minimal_energy_structure.vasp"), cryst)
+    # ase.io.write(os.path.join("..", "results", test_name, "minimal_energy_structure.vasp"), cryst)
     # print("Rerunning GULP, so that gulp.gout would have optimised structure")
     # opt = calc.get_optimizer(cryst)
     # opt.run(fmax=0.05)
@@ -218,9 +223,9 @@ def benchmark():
                                   phase=SrTiO)
 
             # The correct symmetry group is 221, supergroup of 195
-            results, runtime = allocation.optimize_cube_symmetry_ase(group=settings[f'SrTiO3_{i}']['group'],
-                                                                     PoolSolutions=settings[f'SrTiO3_{i}']['top'],
-                                                                     TimeLimit=0)
+            results, runtime, _ = allocation.optimize_cube_symmetry_ase(group=settings[f'SrTiO3_{i}']['group'],
+                                                                        PoolSolutions=settings[f'SrTiO3_{i}']['top'],
+                                                                        TimeLimit=0)
 
             best_energy = process_results(lib=SrTiO.filedir / 'SrTiO/buck.lib', results=results,
                                           ions_count=ions_count, test_name=f'SrTiO_{i}')
@@ -251,9 +256,9 @@ def benchmark():
 
             allocation = Allocate(ions_count, grid_size=settings[f'Y2O3_{i}']['grid'], cell_size=10.7, phase=YSrTiO)
             # The actual group is 206, 195 is subgroup
-            results, runtime = allocation.optimize_cube_symmetry_ase(group=settings[f'Y2O3_{i}']['group'],
-                                                                     PoolSolutions=settings[f'Y2O3_{i}']['top'],
-                                                                     TimeLimit=0)
+            results, runtime, _ = allocation.optimize_cube_symmetry_ase(group=settings[f'Y2O3_{i}']['group'],
+                                                                        PoolSolutions=settings[f'Y2O3_{i}']['top'],
+                                                                        TimeLimit=0)
 
             best_energy = process_results(lib=YSrTiO.filedir / 'YSrTiO/buck.lib', results=results,
                                           ions_count=ions_count, test_name=f'Y2O3_{i}')
@@ -280,9 +285,9 @@ def benchmark():
             start = time()
 
             allocation = Allocate(ions_count, grid_size=settings[f'Y2Ti2O7_{i}']['grid'], cell_size=10.2, phase=YSrTiO)
-            results, runtime = allocation.optimize_cube_symmetry_ase(group=settings[f'Y2Ti2O7_{i}']['group'],
-                                                                     PoolSolutions=settings[f'Y2Ti2O7_{i}']['top'],
-                                                                     TimeLimit=0)
+            results, runtime, _ = allocation.optimize_cube_symmetry_ase(group=settings[f'Y2Ti2O7_{i}']['group'],
+                                                                        PoolSolutions=settings[f'Y2Ti2O7_{i}']['top'],
+                                                                        TimeLimit=0)
 
             best_energy = process_results(lib=YSrTiO.filedir / 'YSrTiO/buck.lib', results=results,
                                           ions_count=ions_count, test_name=f'Y2Ti2O7_{i}')
@@ -309,9 +314,9 @@ def benchmark():
 
             allocation = Allocate(ions_count, grid_size=settings[f'MgAl2O4_{i}']['grid'], cell_size=8.2, phase=LiMgAlPO)
             # The actual group is 227, is subgroup
-            results, runtime = allocation.optimize_cube_symmetry_ase(group=settings[f'MgAl2O4_{i}']['group'],
-                                                                     PoolSolutions=settings[f'MgAl2O4_{i}']['top'],
-                                                                     TimeLimit=0)
+            results, runtime, _ = allocation.optimize_cube_symmetry_ase(group=settings[f'MgAl2O4_{i}']['group'],
+                                                                        PoolSolutions=settings[f'MgAl2O4_{i}']['top'],
+                                                                        TimeLimit=0)
 
             best_energy = process_results(lib=LiMgAlPO.filedir / 'LiMgAlPO/buck.lib', results=results,
                                           ions_count=ions_count, test_name=f'MgAl2O4_{i}')
@@ -341,9 +346,10 @@ def benchmark():
             allocation = Allocate(ions_count, grid_size=settings[f'Ca3Al2Si3O12_{i}']['grid'],
                                   cell_size=11.9, phase=CaAlSiO)
             # The actual group is 230
-            results, runtime = allocation.optimize_cube_symmetry_ase(group=settings[f'Ca3Al2Si3O12_{i}']['group'],
-                                                                     PoolSolutions=settings[f'Ca3Al2Si3O12_{i}']['top'],
-                                                                     TimeLimit=0)
+            results, runtime, _ = allocation.optimize_cube_symmetry_ase(group=settings[f'Ca3Al2Si3O12_{i}']['group'],
+                                                                        PoolSolutions=settings[f'Ca3Al2Si3O12_{i}'][
+                                                                            'top'],
+                                                                        TimeLimit=0)
 
             best_energy = process_results(lib=CaAlSiO.filedir / 'CaAlSiO/pedone.lib', results=results,
                                           ions_count=ions_count, test_name=f'Ca3Al2Si3O12_{i}')
@@ -358,15 +364,18 @@ def benchmark():
                                             'expected_E': energy, 'time': runtime}, ignore_index=True)
 
     with open(os.path.join("..", "results", "summary.txt"), "w+") as f:
+        print("Non-heuristic optimisation using Gurobi with subsequent local minimisation:", file=f)
         print(tabulate(df_summary, headers=["Test name", "Discretisation g", "Space group",
-                                            "Best energy", "Correct energy", "IP solution time"],
-                       tablefmt='github', showindex=False), f)
+                                            "Best energy (eV)", "Target energy (eV)", "IP solution time (sec)"],
+                       tablefmt='github', showindex=False), file=f)
 
     '''
     
     Start of the quantum section
     
     '''
+
+    df_summary = pd.DataFrame(columns=['name', 'dwave' 'best_E', 'expected_E'])
 
     if settings['quantum_SrO']['test']:
         print("\n\n\n========== Predicting SrO (rocksalt) using quantum annealer ==========")
@@ -377,14 +386,18 @@ def benchmark():
         start = time()
         allocation = Allocate(ions_count, grid_size=multiple * 2, cell_size=5.2 * multiple, phase=SrTiO)
 
-        results = allocation.optimize_qubo(group=settings['quantum_SrO']['group'],
-                                           at_dwave=settings['quantum_SrO']['at_dwave'],
-                                           num_reads=settings['quantum_SrO']['num_reads'],
-                                           infinity_placement=settings['quantum_SrO']['infinity_placement'],
-                                           infinity_orbit=settings['quantum_SrO']['infinity_orbit'],
-                                           annealing_time=settings['quantum_SrO']['annealing_time'])
+        best_energy, target_energy = allocation.optimize_qubo(group=settings['quantum_SrO']['group'],
+                                                              at_dwave=settings['quantum_SrO']['at_dwave'],
+                                                              num_reads=settings['quantum_SrO']['num_reads'],
+                                                              infinity_placement=settings['quantum_SrO'][
+                                                                  'infinity_placement'],
+                                                              infinity_orbit=settings['quantum_SrO']['infinity_orbit'],
+                                                              annealing_time=settings['quantum_SrO']['annealing_time'])
 
-        get_cif_energies(filename='SrO.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
+        energy = get_cif_energies(filename='SrO.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
+
+        df_summary = df_summary.append({'name': 'quantum_SrO', 'dwave': settings['quantum_SrO']['at_dwave'],
+                                        'best_E': best_energy, 'expected_E': target_energy}, ignore_index=True)
 
         end = time()
         print('It took ', end='')
@@ -398,14 +411,17 @@ def benchmark():
         start = time()
         allocation = Allocate(ions_count, grid_size=4, cell_size=5.4, phase=ZnS)
 
-        results = allocation.optimize_qubo(group=settings['quantum_ZnS']['group'],
-                                           at_dwave=settings['quantum_ZnS']['at_dwave'],
-                                           num_reads=settings['quantum_ZnS']['num_reads'],
-                                           infinity_placement=settings['quantum_ZnS']['infinity_placement'],
-                                           infinity_orbit=settings['quantum_ZnS']['infinity_orbit'],
-                                           annealing_time=settings['quantum_ZnS']['annealing_time'])
+        best_energy, target_energy = allocation.optimize_qubo(group=settings['quantum_ZnS']['group'],
+                                               at_dwave=settings['quantum_ZnS']['at_dwave'],
+                                               num_reads=settings['quantum_ZnS']['num_reads'],
+                                               infinity_placement=settings['quantum_ZnS']['infinity_placement'],
+                                               infinity_orbit=settings['quantum_ZnS']['infinity_orbit'],
+                                               annealing_time=settings['quantum_ZnS']['annealing_time'])
 
-        get_cif_energies(filename='ZnS.cif', library=ZnS.filedir / 'ZnS/buck.lib')
+        energy = get_cif_energies(filename='ZnS.cif', library=ZnS.filedir / 'ZnS/buck.lib')
+
+        df_summary = df_summary.append({'name': 'quantum_ZnS', 'dwave': settings['quantum_ZnS']['at_dwave'],
+                                        'best_E': best_energy, 'expected_E': target_energy}, ignore_index=True)
 
         end = time()
         print('It took ', end='')
@@ -414,20 +430,23 @@ def benchmark():
     if settings['quantum_ZrO2']['test']:
         print("\n\n\n========== Predicting ZrO2 (cubic zirconia) using quantum annealer ==========")
         ZrO = Phase('ZrO')
-        multiple = settings['quantum_ZrO2']['multiple']  # the number of primitive cells per side
+        # multiple = settings['quantum_ZrO2']['multiple']  # the number of primitive cells per side
         ions_count = {'Zr': 4, 'O': 8}
 
         start = time()
         allocation = Allocate(ions_count, grid_size=4, cell_size=5.07, phase=ZrO)
 
-        results = allocation.optimize_qubo(group=settings['quantum_ZrO2']['group'],
-                                           at_dwave=settings['quantum_ZrO2']['at_dwave'],
-                                           num_reads=settings['quantum_ZrO2']['num_reads'],
-                                           infinity_placement=settings['quantum_ZrO2']['infinity_placement'],
-                                           infinity_orbit=settings['quantum_ZrO2']['infinity_orbit'],
-                                           annealing_time=settings['quantum_ZrO2']['annealing_time'])
+        best_energy, target_energy = allocation.optimize_qubo(group=settings['quantum_ZrO2']['group'],
+                                               at_dwave=settings['quantum_ZrO2']['at_dwave'],
+                                               num_reads=settings['quantum_ZrO2']['num_reads'],
+                                               infinity_placement=settings['quantum_ZrO2']['infinity_placement'],
+                                               infinity_orbit=settings['quantum_ZrO2']['infinity_orbit'],
+                                               annealing_time=settings['quantum_ZrO2']['annealing_time'])
 
-        get_cif_energies(filename='ZrO2.cif', library=ZrO.filedir / 'ZrO/buck.lib')
+        energy = get_cif_energies(filename='ZrO2.cif', library=ZrO.filedir / 'ZrO/buck.lib')
+
+        df_summary = df_summary.append({'name': 'quantum_ZrO2', 'dwave': settings['quantum_SrO']['at_dwave'],
+                                        'best_E': best_energy, 'expected_E': target_energy}, ignore_index=True)
 
         end = time()
         print('It took ', end='')
@@ -442,18 +461,27 @@ def benchmark():
         start = time()
         allocation = Allocate(ions_count, grid_size=multiple * 2, cell_size=3.9 * multiple, phase=SrTiO)
 
-        results = allocation.optimize_qubo(group=settings['quantum_SrTiO3']['group'],
-                                           at_dwave=settings['quantum_SrTiO3']['at_dwave'],
-                                           num_reads=settings['quantum_SrTiO3']['num_reads'],
-                                           infinity_placement=settings['quantum_SrTiO3']['infinity_placement'],
-                                           infinity_orbit=settings['quantum_SrTiO3']['infinity_orbit'],
-                                           annealing_time=settings['quantum_SrTiO3']['annealing_time'])
+        best_energy, target_energy = allocation.optimize_qubo(group=settings['quantum_SrTiO3']['group'],
+                                               at_dwave=settings['quantum_SrTiO3']['at_dwave'],
+                                               num_reads=settings['quantum_SrTiO3']['num_reads'],
+                                               infinity_placement=settings['quantum_SrTiO3']['infinity_placement'],
+                                               infinity_orbit=settings['quantum_SrTiO3']['infinity_orbit'],
+                                               annealing_time=settings['quantum_SrTiO3']['annealing_time'])
 
-        get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
+        energy = get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
+
+        df_summary = df_summary.append({'name': 'quantum_SrTiO3', 'dwave': settings['quantum_SrO']['at_dwave'],
+                                        'best_E': best_energy, 'expected_E': target_energy}, ignore_index=True)
 
         end = time()
         print('It took ', end='')
         print(" %s seconds" % (end - start))
+
+        with open(os.path.join("..", "results", "summary.txt"), "a") as f:
+            print("\n\n\n\n\n Quantum annealing for periodic lattice atom allocation.\n Target energies correspond to",
+                  file=f)
+            print(tabulate(df_summary, headers=["Test name", "D-Wave", "Best energy (eV)", "Target energy (eV)"],
+                           tablefmt='github', showindex=False), file=f)
 
 
 if __name__ == "__main__":

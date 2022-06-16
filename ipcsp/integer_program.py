@@ -275,9 +275,9 @@ class Allocate:
             print('Minimal energy via optimizer: %g' % m.objVal)
 
             if PoolSolutions > 1:
-                return res, runtime
+                return res, runtime, m.objVal
             else:
-                return res[0:1], runtime
+                return res[0:1], runtime, m.objVal
 
         return None
 
@@ -298,7 +298,7 @@ class Allocate:
         print("Running integer programming optimisation to generate a model file with the required coefficients and "
               "obtain the ground truth for the lowest energy allocation.")
 
-        self.optimize_cube_symmetry_ase(group=group, verbose=False)
+        _, _, target_energy = self.optimize_cube_symmetry_ase(group=group, verbose=False)
 
         print("Generating quadratic unconstrained binary problem from model.lp")
 
@@ -323,6 +323,7 @@ class Allocate:
         # print(list(bqm.variables))
         print("There are ", len(bqm.variables), "variables in the program")
         print("Running the Annealer")
+        print("A series of readouts with the energy, allocation to lattice positions and stoichiometry:")
 
         def stoic(datum):
             # counts = {'O': 0, 'Sr': 0, 'Ti': 0}
@@ -360,8 +361,10 @@ class Allocate:
             sol = None
             json_result = []
 
+            i = 1
             for datum in response.data(['sample', 'energy', 'num_occurrences']):
-                print(simplify(datum), stoic(datum))
+                print(f"Readout {i}:", simplify(datum), stoic(datum))
+                i += 1
                 json_result.append(simplify(datum))
 
                 if datum.energy < min_energy:
@@ -372,23 +375,31 @@ class Allocate:
             with open('last_dwave.json', 'w') as f:
                 json.dump(json_result, f, indent=2)
 
+            print("The best found allocation: (atom specie, position on a lattice)")
             for i in sol.sample.keys():
                 if sol.sample[i] == 1:
                     print(i)
-            print("Energy: ", sol.energy, "Occurrences: ", sol.num_occurrences)
+            print("The lowest found energy: ", sol.energy, "Occurrences: ", sol.num_occurrences)
+            return sol.energy, target_energy
         else:
             solver = neal.SimulatedAnnealingSampler()
             response = solver.sample(bqm, num_reads=num_reads)
             min_energy = 10000
             sample = 0
+
+            i = 1
             for datum in response.data(['sample', 'energy', 'num_occurrences']):
-                print(simplify(datum), stoic(datum))
+                print(f"Readout {i}:", simplify(datum), stoic(datum))
+                i += 1
 
                 if datum.energy < min_energy:
                     sample = datum
                     min_energy = datum.energy
 
+            # ok, sample contains the best found allocation and we want to print it
+            print("The best found allocation: (atom specie, position on a lattice)")
             for i in sample.sample.keys():
                 if sample.sample[i] == 1:
                     print(i)
-            print("Energy: ", sample.energy, "Occurrences: ", sample.num_occurrences)
+            print("The lowest found energy: ", sample.energy, "Occurrences: ", sample.num_occurrences)
+            return sample.energy, target_energy
