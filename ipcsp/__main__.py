@@ -68,40 +68,40 @@ settings = {
 
     # perovskite structure of SrTiO
     'SrTiO3_1': {'test': True, 'multiple': 1, 'group': 1, 'top': 1, 'grid': 4},  # group is 221, sub 195
-    'SrTiO3_2': {'test': False, 'multiple': 2, 'group': 195, 'top': 1, 'grid': 8},  # group is 221, sub 195
+    'SrTiO3_2': {'test': True, 'multiple': 2, 'group': 195, 'top': 1, 'grid': 8},  # group is 221, sub 195
     'SrTiO3_3': {'test': True, 'multiple': 3, 'group': 221, 'top': 1, 'grid': 6},  # group is 221, sub 195
-    'SrTiO3_4': {'test': False, 'multiple': 3, 'group': 200, 'top': 1, 'grid': 6},  # group is 221, sub 195
-    'SrTiO3_5': {'test': False, 'multiple': 3, 'group': 195, 'top': 1, 'grid': 6},  # group is 221, sub 195
+    'SrTiO3_4': {'test': True, 'multiple': 3, 'group': 200, 'top': 1, 'grid': 6},  # group is 221, sub 195
+    'SrTiO3_5': {'test': True, 'multiple': 3, 'group': 195, 'top': 1, 'grid': 6},  # group is 221, sub 195
     # bixbyite structure of Y2O3f
-    'Y2O3_1': {'test': False, 'group': 206, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
-    'Y2O3_2': {'test': False, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
-    'Y2O3_3': {'test': False, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
+    'Y2O3_1': {'test': True, 'group': 206, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
+    'Y2O3_2': {'test': True, 'group': 199, 'top': 1, 'grid': 8},  # group is 206, sub 199, sub 198
+    'Y2O3_3': {'test': True, 'group': 206, 'top': 1, 'grid': 16},  # group is 206, sub 199, sub 198
     # pyrochlore structure of Y2Ti2O7
-    'Y2Ti2O7_1': {'test': False, 'group': 227, 'top': 2, 'grid': 8},  # group is 227, 196, 195
-    'Y2Ti2O7_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
+    'Y2Ti2O7_1': {'test': True, 'group': 227, 'top': 2, 'grid': 8},  # group is 227, 196, 195
+    'Y2Ti2O7_2': {'test': True, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, 196, 195
     # spinel structure of MgAl2O4
-    'MgAl2O4_1': {'test': False, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
-    'MgAl2O4_2': {'test': False, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, sub 195, 196, grid is 8
-    'MgAl2O4_3': {'test': False, 'group': 196, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
-    'MgAl2O4_4': {'test': False, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'MgAl2O4_1': {'test': True, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'MgAl2O4_2': {'test': True, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, sub 195, 196, grid is 8
+    'MgAl2O4_3': {'test': True, 'group': 196, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'MgAl2O4_4': {'test': True, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
     # garnet structure of Ca3Al2Si3O12
-    'Ca3Al2Si3O12_1': {'test': False, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
-    'Ca3Al2Si3O12_2': {'test': False, 'group': 206, 'top': 1, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
+    'Ca3Al2Si3O12_1': {'test': True, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
+    'Ca3Al2Si3O12_2': {'test': True, 'group': 206, 'top': 1, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
 
     # Quantum annealer section. We use D-Wave SDK to solve the periodic lattice atom allocation problems.
 
     'quantum_SrO': {'test': True, 'group': 195, 'at_dwave': False, 'num_reads': 100,
                     'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                     'annealing_time': 200},  # 'group': 225; pass group 195
-    'quantum_SrTiO3': {'test': False, 'group': 221, 'at_dwave': False, 'num_reads': 100,
+    'quantum_SrTiO3': {'test': True, 'group': 221, 'at_dwave': False, 'num_reads': 100,
                        'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                        'annealing_time': 200},  # group 221, passed 221
-    'quantum_ZnS': {'test': False, 'group': 195, 'at_dwave': False, 'num_reads': 200,
+    'quantum_ZnS': {'test': True, 'group': 195, 'at_dwave': False, 'num_reads': 200,
                     'multiple': 1, 'infinity_placement': 100, 'infinity_orbit': 100,
                     'annealing_time': 200},  # 'group': 216; passed 196
     # passed 195; 168 qubits, chains of length 7
     # it has close energy minima -134 and -133
-    'quantum_ZrO2': {'test': False, 'group': 198, 'at_dwave': False, 'num_reads': 300,
+    'quantum_ZrO2': {'test': True, 'group': 198, 'at_dwave': False, 'num_reads': 300,
                      'multiple': 1, 'infinity_placement': 50, 'infinity_orbit': 50,
                      'annealing_time': 1000},  # group 225, sub 200, 198, 195
 }
@@ -375,7 +375,7 @@ def benchmark():
     
     '''
 
-    df_summary = pd.DataFrame(columns=['name', 'dwave' 'best_E', 'expected_E'])
+    df_summary = pd.DataFrame(columns=['name', 'dwave', 'best_E', 'expected_E'])
 
     if settings['quantum_SrO']['test']:
         print("\n\n\n========== Predicting SrO (rocksalt) using quantum annealer ==========")
@@ -445,7 +445,7 @@ def benchmark():
 
         energy = get_cif_energies(filename='ZrO2.cif', library=ZrO.filedir / 'ZrO/buck.lib')
 
-        df_summary = df_summary.append({'name': 'quantum_ZrO2', 'dwave': settings['quantum_SrO']['at_dwave'],
+        df_summary = df_summary.append({'name': 'quantum_ZrO2', 'dwave': settings['quantum_ZrO2']['at_dwave'],
                                         'best_E': best_energy, 'expected_E': target_energy}, ignore_index=True)
 
         end = time()
@@ -470,7 +470,7 @@ def benchmark():
 
         energy = get_cif_energies(filename='SrTiO3.cif', library=SrTiO.filedir / 'SrTiO/buck.lib')
 
-        df_summary = df_summary.append({'name': 'quantum_SrTiO3', 'dwave': settings['quantum_SrO']['at_dwave'],
+        df_summary = df_summary.append({'name': 'quantum_SrTiO3', 'dwave': settings['quantum_SrTiO3']['at_dwave'],
                                         'best_E': best_energy, 'expected_E': target_energy}, ignore_index=True)
 
         end = time()
@@ -478,7 +478,7 @@ def benchmark():
         print(" %s seconds" % (end - start))
 
     with open(os.path.join("..", "results", "summary.txt"), "a") as f:
-        print("\n\n\n\n\n Quantum annealing for periodic lattice atom allocation.\n", file=f)
+        print("\n\n\n\n\n Quantum annealing for the periodic lattice atom allocation.\n", file=f)
         print(tabulate(df_summary, headers=["Test name", "D-Wave", "Best energy (eV)", "Target energy (eV)"],
                        tablefmt='github', showindex=False), file=f)
 

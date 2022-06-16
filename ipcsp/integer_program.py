@@ -375,7 +375,7 @@ class Allocate:
             with open('last_dwave.json', 'w') as f:
                 json.dump(json_result, f, indent=2)
 
-            print("The best found allocation: (atom specie, position on a lattice)")
+            print("The best found allocation:\n(atom specie, position on a lattice)")
             for i in sol.sample.keys():
                 if sol.sample[i] == 1:
                     print(i)
