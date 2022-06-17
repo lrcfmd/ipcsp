@@ -323,7 +323,7 @@ class Allocate:
         # print(list(bqm.variables))
         print("There are ", len(bqm.variables), "variables in the program")
         print("Running the Annealer")
-        print("A series of readouts with the energy, allocation to lattice positions and stoichiometry:")
+        print("A series of readouts with the energy, allocation to the lattice positions:")
 
         def stoic(datum):
             # counts = {'O': 0, 'Sr': 0, 'Ti': 0}
@@ -363,7 +363,9 @@ class Allocate:
 
             i = 1
             for datum in response.data(['sample', 'energy', 'num_occurrences']):
-                print(f"Readout {i}:", simplify(datum), stoic(datum))
+                # stoic only makes sense for P1 space group
+                # print(f"Readout {i}:", simplify(datum), stoic(datum))
+                print(f"Readout {i}:", simplify(datum))
                 i += 1
                 json_result.append(simplify(datum))
 
@@ -389,7 +391,9 @@ class Allocate:
 
             i = 1
             for datum in response.data(['sample', 'energy', 'num_occurrences']):
-                print(f"Readout {i}:", simplify(datum), stoic(datum))
+                # stoic only makes sense for P1 space group
+                # print(f"Readout {i}:", simplify(datum), stoic(datum))
+                print(f"Readout {i}:", simplify(datum))
                 i += 1
 
                 if datum.energy < min_energy:

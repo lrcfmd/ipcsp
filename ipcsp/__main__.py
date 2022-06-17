@@ -41,9 +41,12 @@ from copy import deepcopy
   'group' -- space group of an allocation. Positions that are equal under symmetry, will have the same atoms
   'grid' -- the parameter g equal to the number of points per the side of a unit cell
   'top' -- the number of the lowest energy solutions that will be computed by Gurobi
-    If top is 1, then only the global optimum will be considered. Note, top > 1 can occasionally produce
-    solutions violating constraints. This is a bug, which should be fixed in future versions of Gurobi. 
-    We simply filter out incorrect solutions for the time being.
+    If top is 1, then only the global optimum will be considered. The values of top > 1 should be used with caution.
+    Equivalent allocations (but different solutions of the integer program) with the same energy likely will be produced,
+    thus, the number should be larger than the required number of different solutions. Further, the current version of
+    Gurobi can occasionally produce solutions violating constraints. This is a bug, which should be fixed 
+    in future versions of Gurobi based on forum discussions. We deal with this issue by simply filtering out incorrect 
+    solutions for the time being.
    
  Quantum annealing specific parameters: 
    'at_dwave' -- True will connect to a D-Wave quantum annealer and use your computational budget (register first)
@@ -83,7 +86,7 @@ settings = {
     'MgAl2O4_1': {'test': True, 'group': 227, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
     'MgAl2O4_2': {'test': True, 'group': 227, 'top': 1, 'grid': 16},  # group is 227, sub 195, 196, grid is 8
     'MgAl2O4_3': {'test': True, 'group': 196, 'top': 1, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
-    'MgAl2O4_4': {'test': True, 'group': 195, 'top': 10, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
+    'MgAl2O4_4': {'test': True, 'group': 195, 'top': 20, 'grid': 8},  # group is 227, sub 195, 196, grid is 8
     # garnet structure of Ca3Al2Si3O12
     'Ca3Al2Si3O12_1': {'test': True, 'group': 230, 'top': 1, 'grid': 16},  # group is 230, sub 206, 199, grid is 8
     'Ca3Al2Si3O12_2': {'test': True, 'group': 206, 'top': 1, 'grid': 8},  # group is 230, sub 206, 199, grid is 8
@@ -204,6 +207,17 @@ def benchmark():
 
     shutil.rmtree(os.path.join("..", "results"), ignore_errors=True)
     os.mkdir(os.path.join("..", "results"))
+
+    '''
+    
+    Single test selector
+    
+    for key in settings.keys():
+        settings[key]['test'] = False
+
+    settings['quantum_ZnS']['test'] = True
+    
+    #'''
 
     df_summary = pd.DataFrame(columns=['name', 'grid', 'group', 'best_E', 'expected_E', 'time'])
 
@@ -364,7 +378,8 @@ def benchmark():
                                             'expected_E': energy, 'time': runtime}, ignore_index=True)
 
     with open(os.path.join("..", "results", "summary.txt"), "w+") as f:
-        print("Non-heuristic optimisation using Gurobi with subsequent local minimisation:", file=f)
+        print("Non-heuristic optimisation using Gurobi with subsequent local minimisation (test equivalent to Table 1 "
+              "of the paper):", file=f)
         print(tabulate(df_summary, headers=["Test name", "Discretisation g", "Space group",
                                             "Best energy (eV)", "Target energy (eV)", "IP solution time (sec)"],
                        tablefmt='github', showindex=False), file=f)
