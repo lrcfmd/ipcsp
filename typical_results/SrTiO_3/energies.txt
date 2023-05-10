@@ -1,0 +1,1 @@
+Solution1:  Energy initial:  -4277.36973605  final:  -4281.75575222

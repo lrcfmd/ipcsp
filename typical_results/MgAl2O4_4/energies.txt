@@ -1,0 +1,5 @@
+Solution1:  Energy initial:  -1577.41740061  final:  -1612.52358147
+Solution2:  Energy initial:  -1574.38327757  final:  -1615.14496407
+Solution3:  Energy initial:  -1565.58398782  final:  -1616.23658333
+Solution4:  Energy initial:  -1562.6883536  final:  -1620.88847316
+Solution5:  Energy initial:  -1553.84933416  final:  -1567.90650015
