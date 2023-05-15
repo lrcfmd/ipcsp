@@ -69,4 +69,5 @@ the interaction values between different pairs of atoms and positions for subseq
 Thus, repeated runs for another space group or composition are usually faster. 
 
 ## Citation
-This research code is written to accompany the paper "Non-Heuristic Algorithms, Guarantees and Quantum Computing for Crystal Structure Prediction" and this version will not be further updated except for minor corrections.
+This research code is written to accompany the paper "Optimality guarantees for crystal structure
+prediction" and this version will not be further updated except for minor corrections.
